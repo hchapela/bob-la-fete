@@ -6,3 +6,40 @@ body
     width 100vw
     height 100vh
     overflow hidden
+    font-family: 'IBM Plex Mono', monospace
+
+.hover-flash
+    width 100vw
+    height 100vh
+    position absolute
+    background #2319c3
+    opacity 0.1
+
+.links
+    position absolute
+    bottom 0
+    right 0
+    display flex
+    margin 0 15px 15px 0
+
+    .link-item
+        fill white
+        margin 10px
+        opacity 0.6
+    .link-item:hover
+        opacity 1
+
+.click
+    position absolute
+    height 100vh
+    width 100vw
+    display flex
+    justify-content center
+    align-items center
+    transform translateY(200px)
+    opacity 0.6
+    transition ease 0.1s
+    p
+        color white
+        
+

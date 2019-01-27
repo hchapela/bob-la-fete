@@ -1,14 +1,11 @@
 import './css/style.styl'
 import * as THREE from 'three'
 // Other js files
-import Particle from './js/Particle'
+import Boba from './js/Boba'
 // Camera import
 import CameraControls from 'camera-controls'
 CameraControls.install( { THREE: THREE } )
-// Import Loaders for OBJ and MTL + Files
-import {MTLLoader, OBJLoader} from 'three-obj-mtl-loader'
-import planetMaterials from './images/materials.mtl'
-import planetObj from './images/model.obj'
+
 
 class Main {
     constructor() {
@@ -16,37 +13,26 @@ class Main {
         this.scene = new THREE.Scene()
         // Texture loader
         this.textureLoader = new THREE.TextureLoader()
+
+        this.cameraMovementRatio = 50
         // Init scope of functions
         this.initScope()
         // init all the scene
-        this.initOBJ()
         this.initCanvas()
         this.initCamera()
         this.initRenderer()
         this.initLights()
         this.initCursor()
         this.initControls()
-        this.initLoop()
+
         // Import elements of the scene
-        this.particle = new Particle(this)
+        this.boba = new Boba(this)
+
+        this.initLoop()
     }
 
     initScope() {
         this.initLoop = this.initLoop.bind(this)
-    }
-
-    initOBJ() {
-        // setup loaders
-        let mtlLoader = new MTLLoader()
-        let objLoader = new OBJLoader()
-        // Import files
-        mtlLoader.load(planetMaterials, (materials) => {
-            materials.preload()
-            objLoader.setMaterials(materials)
-            objLoader.load(planetObj, (object) => {
-                this.scene.add(object)
-            })
-        })
     }
 
     initCanvas() {
@@ -63,13 +49,14 @@ class Main {
             this.camera.updateProjectionMatrix()
         
             // Update
-            this.renderer.setSize(sizes.width, sizes.height)
+            this.renderer.setSize(this.sizes.width, this.sizes.height)
         })
     }
 
     initCamera() {
-        this.camera = new THREE.PerspectiveCamera(75, this.sizes.width / this.sizes.height)
-        this.camera.position.z = 10
+        this.camera = new THREE.PerspectiveCamera(60, this.sizes.width / this.sizes.height)
+        this.originZ = 7
+        this.camera.position.z = this.originZ
         this.scene.add(this.camera)
     }
 
@@ -83,34 +70,77 @@ class Main {
     }
 
     initLights() {
-        this.lights = []
-        // First light
-        this.lights[0] = new THREE.AmbientLight(0xffffff, 0.5)
-        this.scene.add(this.lights[0])
+        // Second light
+        this.spotLight = new THREE.SpotLight( 0xFFFFFF, 0.2 );
+        this.spotLight.name = 'Spot Light';
+        this.spotLight.angle = Math.PI;
+        this.spotLight.penumbra = 0.7;
+        this.spotLight.position.set( 5, 5, 5 );
+        this.spotLight.castShadow = true;
+        this.spotLight.shadow.camera.near = 8;
+        this.spotLight.shadow.camera.far = 30;
+        this.spotLight.shadow.mapSize.width = 1024;
+        this.spotLight.shadow.mapSize.height = 1024;
+        this.scene.add( this.spotLight );
 
-        this.lights[1] = new THREE.DirectionalLight(0xFFFFFF, 0.6)
-        this.lights[1].position.y = 1
-        this.lights[1].position.x = 1
-        this.lights[1].position.z = 1
-        this.scene.add(this.lights[1])
+        window.addEventListener('mousemove', (_event) => {
+            let posX = (_event.clientX * 100) / this.sizes.width
+            let posY = (_event.clientY * 100) / this.sizes.height
+
+            this.spotLight.position.set(
+                posX,
+                posY,
+                3
+            )
+        })
     }
 
     initCursor() {
         this.cursor = {}
         this.cursor.x = 0
         this.cursor.y = 0
+
+        this.mouse = new THREE.Vector2()
+        
         // Event of update
         window.addEventListener('mousemove', (_event) =>
         {
             this.cursor.x = _event.clientX / this.sizes.width - 0.5
             this.cursor.y = _event.clientY / this.sizes.height - 0.5
+
+            this.mouse.x = ( event.clientX / this.sizes.width ) * 2 - 1;
+            this.mouse.y = - ( event.clientY / this.sizes.height ) * 2 + 1;
         })
 
     }
 
     initControls() {
         this.clock = new THREE.Clock()
-        this.cameraControls = new CameraControls( this.camera, this.renderer.domElement )
+        this.cameraControls = new CameraControls( this.camera, this.renderer.domElement, {ignoreDOMEventListeners: true} )
+        this.zoomSensitivity = 30
+        this.isDragged = false
+
+        // Scroll movement
+        window.addEventListener('wheel', (_event) => {
+            // where to move
+            let moveY = (_event.deltaY % 20) / this.zoomSensitivity
+            // Boolean to know if we are in the mooving zone area
+            let canMove = true
+            // Not move to close
+            if(this.currentPos.z + moveY < 5 && _event.deltaY > 0) {
+                canMove = false
+            }
+            // Not move to far
+            else if(this.currentPos.z + moveY > 10 && _event.deltaY < 0) {
+                canMove = false
+            }
+            // If we want to scroll not to far then move
+            if(canMove) {
+                this.cameraControls.forward(moveY, true)
+            }
+            
+        })
+
     }
 
     initLoop() {
@@ -119,26 +149,23 @@ class Main {
         // Update controls
         this.delta = this.clock.getDelta()
         this.hasControlsUpdated = this.cameraControls.update( this.delta )
-        // controls.update()
 
         // Update camera
         this.camera.position.x = this.cursor.x * 3
         this.camera.position.y = - this.cursor.y * 3
         this.camera.lookAt(new THREE.Vector3())
 
+        // Update positions of camera
+        this.currentPos = this.cameraControls.getPosition()
 
-        // Renderer
-        if ( this.hasControlsUpdated ) {
-            this.renderer.render( this.scene, this.camera )
-        }
+        // Get time
+        this.timer = 0.0001 * Date.now()
+        this.scene.position.x = Math.sin(this.timer) / 2
+        this.scene.position.y = Math.cos(this.timer) / 2
+        this.scene.rotateY(Math.abs(Math.cos(this.timer) / this.cameraMovementRatio))
+
+        this.renderer.render( this.scene, this.camera )
     }
 }
 
 const main = new Main()
-
-
-/**
- * Particles
- */
-// const particle = new Particle({ textureLoader })
-// scene.add(particle.container)
