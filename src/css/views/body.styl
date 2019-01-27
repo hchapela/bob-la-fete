@@ -20,12 +20,22 @@ body
     bottom 0
     right 0
     display flex
+    z-index 99
     margin 0 15px 15px 0
+    
+    p.link-item
+        color white
+        margin auto 5px
+        font-size 10px
+        opacity 0.6
 
-    .link-item
+    a.link-item
         fill white
+        cursor pointer
         margin 10px
         opacity 0.6
+        transition ease 0.2s
+
     .link-item:hover
         opacity 1
 
@@ -41,5 +51,4 @@ body
     transition ease 0.1s
     p
         color white
-        
-
+        cursor pointer

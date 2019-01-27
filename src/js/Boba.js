@@ -1,8 +1,8 @@
 import * as THREE from 'three'
 // Import Loaders for OBJ and MTL + Files
 import {MTLLoader, OBJLoader} from 'three-obj-mtl-loader'
-import planetMaterials from '../images/materials.mtl'
-import planetObj from '../images/model.obj'
+import planetMaterials from '../images/boba.mtl'
+import planetObj from '../images/boba.obj'
 import song from '../assets/bob-la-fete.mp3'
 
 export default class Particle {
