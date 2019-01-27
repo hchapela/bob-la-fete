@@ -5,6 +5,8 @@ import Boba from './js/Boba'
 // Camera import
 import CameraControls from 'camera-controls'
 CameraControls.install( { THREE: THREE } )
+// import favicon
+import favicon from '../static/favicon.ico'
 
 
 class Main {

@@ -30,11 +30,11 @@ module.exports = {
                 ]
             },
             {
-                test: /\.(jpg|png|svg|gif|mtl|obj|mp3)$/,
+                test: /\.(jpg|png|svg|gif|mtl|obj|mp3|ico)$/,
                 use:
                 [
                     {
-                        loader: 'file-loader',
+                        loader: 'file-loader?name=[name].[ext]',
                         options:
                         {
                             outputPath: 'images/'

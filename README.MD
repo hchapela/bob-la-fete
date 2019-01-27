@@ -9,6 +9,7 @@ Here is the [Repository](https://github.com/hchapela/bob-la-fete)
 
 
 ### Quick Start
+_You need to be on a server_
 
 * ``` git clone https://github.com/hchapela/starter-webpack ```
 * ``` npm i ```
