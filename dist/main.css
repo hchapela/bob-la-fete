@@ -1,0 +1,183 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.hover-flash {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  background: #2319c3;
+  opacity: 0.1;
+}
+.links {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  z-index: 99;
+  margin: 0 15px 15px 0;
+}
+.links p.link-item {
+  color: #fff;
+  margin: auto 5px;
+  font-size: 10px;
+  opacity: 0.6;
+}
+.links a.link-item {
+  fill: #fff;
+  cursor: pointer;
+  margin: 10px;
+  opacity: 0.6;
+  transition: ease 0.2s;
+}
+.links .link-item:hover {
+  opacity: 1;
+}
+.click {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(200px);
+  opacity: 0.6;
+  transition: ease 0.1s;
+}
+.click p {
+  color: #fff;
+  cursor: pointer;
+}
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+}
+border 0 {
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+body {
+  line-height: 1;
+}
+ol,
+ul {
+  list-style: none;
+}
+blockquote,
+q {
+  quotes: none;
+}
+blockquotebefore,
+blockquoteafter,
+qbefore,
+qafter {
+  content: '';
+  content: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+
+/*# sourceMappingURL=main.css.map*/
